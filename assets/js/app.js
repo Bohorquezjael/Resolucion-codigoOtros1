@@ -1,16 +1,16 @@
 const baseEndpoint = "https://api.github.com";
 const usersEndpoint = `${baseEndpoint}/users`;
 
-// Corrección en la selección de elementos por clase y variables mas descriptivas
-const name = document.getElementsByClassName(".name");  
-const blogName = document.getElementsByClassName(".blog");
-const location = document.getElementsByClassName(".location");
-
 //hago la funcion asincrona para que pueda usar el await
 async function displayUser(username) {
+  // Corrección en la selección de elementos por clase y variables mas descriptivas
+  //las variables no estaban en el scope correcto
+  const userName = document.getElementById("name");  
+  const blogName = document.getElementById("blog");
+  const location = document.getElementById("location");
   //manejo una posible excepcion a causa del fetch
   try {
-    name.textContent = 'Cargando...';
+    userName.textContent = 'Cargando...';
     const response = await fetch(`${usersEndpoint}/${username}`);
     //si la respuesta de la peticion no es un ok(HTTP:200) lanzo excecion y la manejo con el catch
     if (!response.ok) {
@@ -21,9 +21,9 @@ async function displayUser(username) {
     //imprimo los objetos del json resuelto
     console.log(data);
     //mediante corto circuito extraaigo los valores del objeto o si no los tiene les asigno uno por default
-    name.innerText = data.name || 'Sin nombre';
-    blogName.innerText = data.blog || 'Sin blog';
-    location.innerText = data.location || 'Ubicación desconocida';
+    userName.textContent = data.name || 'Sin nombre';
+    blogName.textContent = data.blog || 'Sin blog';
+    location.textContent = data.location || 'Ubicación desconocida';
   } catch (err) {
     handleError(err);
   }
@@ -32,7 +32,7 @@ async function displayUser(username) {
 function handleError(err) {
   console.log('OH NO!');
   console.log(err);
-  name.textContent = `Algo salió mal: ${err.message}`;
+  userName.textContent = `Algo salió mal: ${err.message}`;
 }
 
 //por ultimo slolo llamo a la funcion para que colocque la informacion en los  elementos html
